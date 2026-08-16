@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MemoryExplorer } from './components/MemoryExplorer';
 import { HandoffWizard } from './components/HandoffWizard';
 import { MemoryGraph } from './components/MemoryGraph';
+import { CodebaseGraph } from './components/CodebaseGraph';
 import { McpServerDocs } from './components/McpServerDocs';
 import { SAMPLE_MEMORIES } from './data/sampleMemories';
 import {
@@ -20,7 +21,7 @@ import {
 import { Toaster } from 'sonner';
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<'explorer' | 'handoff' | 'graph' | 'mcp'>('explorer');
+  const [activeTab, setActiveTab] = useState<'explorer' | 'handoff' | 'graph' | 'codebase' | 'mcp'>('explorer');
   const [darkMode, setDarkMode] = useState(false);
 
   const toggleDarkMode = () => {
@@ -48,7 +49,7 @@ export function App() {
                 Vibe Memory
               </span>
               <span className="hidden sm:inline-block ml-2 text-[11px] font-mono text-muted-foreground">
-                v1.0 (Agent Handoff Protocol)
+                v1.1 (Dual Context & AST Engine)
               </span>
             </div>
           </div>
@@ -81,27 +82,29 @@ export function App() {
         <section className="text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-mono font-semibold">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Universal Long-Term Memory for AI Coding Agents</span>
+            <span>Dual-Engine: Architectural Memory + Codebase AST Knowledge Graph</span>
           </div>
 
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-light text-foreground tracking-tight leading-tight">
-            Seamless Context Handoff for <span className="italic font-normal text-primary">AI Agents</span>
+            Universal Memory & <span className="italic font-normal text-primary">Codebase Intelligence</span>
           </h1>
 
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Quit <strong>Claude Code</strong> mid-task, switch to <strong>Antigravity</strong> or <strong>Cursor</strong> in the same directory, and resume without re-explaining the architecture, bug discoveries, or user preferences.
+            Combines <strong>cross-agent long-term memory</strong> with <strong>AST symbol intelligence</strong>. Index codebases, cut LLM tokens by 97%, and hand off context seamlessly across Antigravity, Cursor, Claude Code, and Codex.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-xs font-mono text-muted-foreground">
+            <span className="px-2 py-1 rounded bg-muted">AST Knowledge Graph</span>
+            <span>•</span>
+            <span className="px-2 py-1 rounded bg-muted">97% Token Reduction</span>
+            <span>•</span>
             <span className="px-2 py-1 rounded bg-muted">Antigravity</span>
             <span>•</span>
             <span className="px-2 py-1 rounded bg-muted">Cursor</span>
             <span>•</span>
             <span className="px-2 py-1 rounded bg-muted">Claude Code</span>
             <span>•</span>
-            <span className="px-2 py-1 rounded bg-muted">OpenAI Codex</span>
-            <span>•</span>
-            <span className="px-2 py-1 rounded bg-muted">Model Context Protocol (MCP)</span>
+            <span className="px-2 py-1 rounded bg-muted">MCP Protocol</span>
           </div>
         </section>
 
@@ -110,6 +113,7 @@ export function App() {
           <div className="inline-flex p-1.5 rounded-xl border border-border bg-muted/60 gap-1 overflow-x-auto">
             {[
               { id: 'explorer', label: 'Memory Explorer', icon: <Brain className="w-3.5 h-3.5" /> },
+              { id: 'codebase', label: 'Codebase AST Index', icon: <Layers className="w-3.5 h-3.5" /> },
               { id: 'handoff', label: 'Handoff Wizard', icon: <Zap className="w-3.5 h-3.5" /> },
               { id: 'graph', label: 'Context Lineage Graph', icon: <GitFork className="w-3.5 h-3.5" /> },
               { id: 'mcp', label: 'MCP Protocol Setup', icon: <Terminal className="w-3.5 h-3.5" /> },
@@ -132,6 +136,7 @@ export function App() {
 
         {/* Tab Views */}
         {activeTab === 'explorer' && <MemoryExplorer memories={SAMPLE_MEMORIES} />}
+        {activeTab === 'codebase' && <CodebaseGraph />}
         {activeTab === 'handoff' && <HandoffWizard />}
         {activeTab === 'graph' && <MemoryGraph />}
         {activeTab === 'mcp' && <McpServerDocs />}
