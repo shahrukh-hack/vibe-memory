@@ -1,0 +1,6 @@
+# Cursor Rules: Universal Agent Memory Sync
+
+- Always read `AGENT_MEMORY.md` before proposing architectural changes.
+- Append newly discovered bug patterns and edge cases to `AGENT_MEMORY.md` under Section 2.
+- Respect user preferences recorded in `AGENT_MEMORY.md` Section 3.
+- When finishing a milestone, write an active handoff snapshot under Section 4.
