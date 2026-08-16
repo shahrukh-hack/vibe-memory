@@ -4,6 +4,7 @@ import { HandoffWizard } from './components/HandoffWizard';
 import { MemoryGraph } from './components/MemoryGraph';
 import { CodebaseGraph } from './components/CodebaseGraph';
 import { McpServerDocs } from './components/McpServerDocs';
+import { TokenCostCalculator } from './components/TokenCostCalculator';
 import { SAMPLE_MEMORIES } from './data/sampleMemories';
 import {
   Brain,
@@ -133,6 +134,11 @@ export function App() {
             ))}
           </div>
         </div>
+
+        {/* Interactive Token Cost Economics Calculator */}
+        <section>
+          <TokenCostCalculator />
+        </section>
 
         {/* Tab Views */}
         {activeTab === 'explorer' && <MemoryExplorer memories={SAMPLE_MEMORIES} />}
