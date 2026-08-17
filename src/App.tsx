@@ -20,12 +20,13 @@ import {
   Moon,
   Network,
   Cpu,
+  Calculator,
 } from 'lucide-react';
 import { Toaster } from 'sonner';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<
-    'explorer' | 'adaptive' | 'graphrag' | 'codebase' | 'handoff' | 'graph' | 'mcp'
+    'explorer' | 'adaptive' | 'graphrag' | 'codebase' | 'calculator' | 'handoff' | 'graph' | 'mcp'
   >('explorer');
   const [darkMode, setDarkMode] = useState(false);
 
@@ -82,7 +83,7 @@ export function App() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-12 space-y-10">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-8">
         {/* Hero Section */}
         <section className="text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-mono font-semibold">
@@ -115,25 +116,26 @@ export function App() {
           </div>
         </section>
 
-        {/* Navigation Tabs */}
-        <div className="flex justify-center">
-          <div className="inline-flex p-1.5 rounded-xl border border-border bg-muted/60 gap-1 overflow-x-auto max-w-full">
+        {/* Navigation Tabs Bar */}
+        <div className="flex justify-center sticky top-20 z-40">
+          <div className="inline-flex p-1.5 rounded-2xl border border-border bg-card/95 backdrop-blur-md shadow-sm gap-1 overflow-x-auto max-w-full">
             {[
-              { id: 'explorer', label: 'Memory Explorer', icon: <Brain className="w-3.5 h-3.5" /> },
+              { id: 'explorer', label: 'Memory Explorer', icon: <Brain className="w-3.5 h-3.5 text-primary" /> },
               { id: 'adaptive', label: 'Mem0 Adaptive Sandbox', icon: <Cpu className="w-3.5 h-3.5 text-red-500" /> },
               { id: 'graphrag', label: 'GraphRAG Explorer', icon: <Network className="w-3.5 h-3.5 text-blue-500" /> },
-              { id: 'codebase', label: 'Codebase AST Index', icon: <Layers className="w-3.5 h-3.5" /> },
-              { id: 'handoff', label: 'Handoff Wizard', icon: <Zap className="w-3.5 h-3.5" /> },
-              { id: 'graph', label: 'Lineage Graph', icon: <GitFork className="w-3.5 h-3.5" /> },
-              { id: 'mcp', label: 'MCP Setup', icon: <Terminal className="w-3.5 h-3.5" /> },
+              { id: 'codebase', label: 'Codebase AST Index', icon: <Layers className="w-3.5 h-3.5 text-emerald-500" /> },
+              { id: 'calculator', label: 'Token Calculator', icon: <Calculator className="w-3.5 h-3.5 text-amber-500" /> },
+              { id: 'handoff', label: 'Handoff Wizard', icon: <Zap className="w-3.5 h-3.5 text-purple-500" /> },
+              { id: 'graph', label: 'Lineage Graph', icon: <GitFork className="w-3.5 h-3.5 text-indigo-500" /> },
+              { id: 'mcp', label: 'MCP Setup', icon: <Terminal className="w-3.5 h-3.5 text-slate-500" /> },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                   activeTab === tab.id
-                    ? 'bg-background text-foreground shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
                 }`}
               >
                 {tab.icon}
@@ -143,19 +145,17 @@ export function App() {
           </div>
         </div>
 
-        {/* Interactive Token Cost Economics Calculator */}
-        <section>
-          <TokenCostCalculator />
+        {/* Dynamic Tab Views (Rendered immediately below the navigation tabs) */}
+        <section className="pt-2">
+          {activeTab === 'explorer' && <MemoryExplorer memories={SAMPLE_MEMORIES} />}
+          {activeTab === 'adaptive' && <AdaptiveLearningSandbox />}
+          {activeTab === 'graphrag' && <GraphRagExplorer />}
+          {activeTab === 'codebase' && <CodebaseGraph />}
+          {activeTab === 'calculator' && <TokenCostCalculator />}
+          {activeTab === 'handoff' && <HandoffWizard />}
+          {activeTab === 'graph' && <MemoryGraph />}
+          {activeTab === 'mcp' && <McpServerDocs />}
         </section>
-
-        {/* Active Tab Views */}
-        {activeTab === 'explorer' && <MemoryExplorer memories={SAMPLE_MEMORIES} />}
-        {activeTab === 'adaptive' && <AdaptiveLearningSandbox />}
-        {activeTab === 'graphrag' && <GraphRagExplorer />}
-        {activeTab === 'codebase' && <CodebaseGraph />}
-        {activeTab === 'handoff' && <HandoffWizard />}
-        {activeTab === 'graph' && <MemoryGraph />}
-        {activeTab === 'mcp' && <McpServerDocs />}
 
         {/* Footer */}
         <footer className="pt-12 border-t border-border/80 text-center space-y-3">
