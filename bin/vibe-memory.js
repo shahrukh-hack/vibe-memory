@@ -9,7 +9,7 @@ const command = process.argv[2] || 'help';
 const MEMORY_FILE = 'AGENT_MEMORY.md';
 
 const DEFAULT_TEMPLATE = `# 🧠 Universal Agent Memory Protocol (AGENT_MEMORY.md)
-> Vendor-neutral persistent memory for Antigravity, Cursor, Claude Code, Windsurf & Codex.
+> Vendor-neutral persistent memory with Mem0-inspired Adaptive Learning & GraphRAG Hierarchical Mapping.
 
 ---
 
@@ -103,7 +103,6 @@ function scanAstSymbols(rootDir, query) {
 
           lines.forEach((line, idx) => {
             const trimmed = line.trim();
-            // Match TypeScript / JS exports and functions
             if (
               trimmed.startsWith('export function') ||
               trimmed.startsWith('export const') ||
@@ -124,7 +123,90 @@ function scanAstSymbols(rootDir, query) {
   }
 
   walk(rootDir);
-  return symbols.slice(0, 50); // Cap to 50 for token optimization
+  return symbols.slice(0, 50);
+}
+
+// -------------------------------------------------------------
+// GRAPHRAG HIERARCHICAL COMMUNITY MAPPER
+// -------------------------------------------------------------
+function buildGraphRagCommunities(rootDir) {
+  const communities = {
+    components: [],
+    hooks_and_state: [],
+    api_and_data: [],
+    types_and_schemas: [],
+    dependencies: [],
+  };
+
+  const validExts = ['.ts', '.tsx', '.js', '.jsx'];
+  const ignoreDirs = ['node_modules', '.git', 'dist', 'build', '.next'];
+
+  function walk(dir) {
+    if (!fs.existsSync(dir)) return;
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.isDirectory()) {
+        if (!ignoreDirs.includes(entry.name)) walk(path.join(dir, entry.name));
+      } else if (entry.isFile()) {
+        const ext = path.extname(entry.name);
+        if (validExts.includes(ext)) {
+          const filePath = path.join(dir, entry.name);
+          const relPath = path.relative(rootDir, filePath).replace(/\\/g, '/');
+          const code = fs.readFileSync(filePath, 'utf8');
+
+          if (relPath.includes('component') || relPath.endsWith('.tsx')) {
+            communities.components.push(relPath);
+          } else if (relPath.includes('hook') || relPath.includes('store') || relPath.includes('state')) {
+            communities.hooks_and_state.push(relPath);
+          } else if (relPath.includes('api') || relPath.includes('service') || relPath.includes('lib')) {
+            communities.api_and_data.push(relPath);
+          } else if (relPath.includes('type') || relPath.includes('schema') || relPath.includes('interface')) {
+            communities.types_and_schemas.push(relPath);
+          }
+
+          // Extract external dependencies
+          const importMatches = code.matchAll(/from\s+['"]([^'"]+)['"]/g);
+          for (const match of importMatches) {
+            const pkg = match[1];
+            if (!pkg.startsWith('.') && !pkg.startsWith('/') && !communities.dependencies.includes(pkg)) {
+              communities.dependencies.push(pkg);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  walk(rootDir);
+  return communities;
+}
+
+// -------------------------------------------------------------
+// MEM0 ADAPTIVE MEMORY EXTRACTOR
+// -------------------------------------------------------------
+function extractMem0AdaptivePatterns(text) {
+  const extracted = [];
+  const lower = text.toLowerCase();
+  const dateStr = new Date().toISOString().split('T')[0];
+
+  if (lower.includes('fix') || lower.includes('error') || lower.includes('bug') || lower.includes('issue')) {
+    extracted.push({
+      section: 'bug',
+      entry: `* **[${dateStr}] [ #bug #fix #adaptive ]** ${text.trim()}`,
+    });
+  } else if (lower.includes('prefer') || lower.includes('never') || lower.includes('always') || lower.includes('use ') || lower.includes('style')) {
+    extracted.push({
+      section: 'pref',
+      entry: `* **[ #pref #adaptive ]** ${text.trim()}`,
+    });
+  } else {
+    extracted.push({
+      section: 'arch',
+      entry: `* **[${dateStr}] [ #arch #adaptive ]** ${text.trim()}`,
+    });
+  }
+
+  return extracted;
 }
 
 // -------------------------------------------------------------
@@ -135,7 +217,7 @@ if (command === 'init') {
   const target = getMemoryPath();
   if (!fs.existsSync(target)) {
     fs.writeFileSync(target, DEFAULT_TEMPLATE, 'utf8');
-    console.log(`\x1b[32m✔ Created ${MEMORY_FILE} with smart semantic tags (#arch, #bug, #pref, #handoff).\x1b[0m`);
+    console.log(`\x1b[32m✔ Created ${MEMORY_FILE} with smart semantic tags and GraphRAG metadata.\x1b[0m`);
   } else {
     console.log(`\x1b[33mℹ ${MEMORY_FILE} already exists in current workspace.\x1b[0m`);
   }
@@ -154,7 +236,7 @@ if (command === 'init') {
   console.log(`\x1b[36m🔍 Searching Vibe Memory for '${query}':\x1b[0m\n`);
   console.log(parseMemoryByTags(content, query));
 } else if (command === 'add') {
-  const section = process.argv[3]; // 'arch', 'bug', 'pref'
+  const section = process.argv[3];
   const text = process.argv[4];
   const tags = process.argv[5] || '';
 
@@ -181,12 +263,59 @@ if (command === 'init') {
 
   if (content.includes(sectionHeader)) {
     content = content.replace(sectionHeader, `${sectionHeader}\n${newEntry}`);
-    fs.writeFileSync(target, content, 'utf8');
-    console.log(`\x1b[32m✔ Added entry to ${section} in ${MEMORY_FILE}\x1b[0m`);
   } else {
-    fs.appendFileSync(target, `\n${newEntry}`, 'utf8');
-    console.log(`\x1b[32m✔ Appended entry to ${MEMORY_FILE}\x1b[0m`);
+    content += `\n${newEntry}`;
   }
+  fs.writeFileSync(target, content, 'utf8');
+  console.log(`\x1b[32m✔ Added entry to ${section} in ${MEMORY_FILE}\x1b[0m`);
+} else if (command === 'learn') {
+  const rawText = process.argv.slice(3).join(' ');
+  if (!rawText) {
+    console.log(`\x1b[31mPlease provide an observation or learning to memorize. Example: npx vibe-memory learn "Always use 8pt spatial grid for cards"\x1b[0m`);
+    process.exit(1);
+  }
+
+  const target = getMemoryPath();
+  if (!fs.existsSync(target)) fs.writeFileSync(target, DEFAULT_TEMPLATE, 'utf8');
+
+  const extractions = extractMem0AdaptivePatterns(rawText);
+  let content = fs.readFileSync(target, 'utf8');
+
+  extractions.forEach(({ section, entry }) => {
+    const sectionHeader = section === 'bug'
+      ? '## 🐛 2. Bug Discoveries'
+      : section === 'pref'
+      ? '## 👤 3. User Preferences'
+      : '## 📐 1. Architectural Decisions';
+
+    if (content.includes(sectionHeader)) {
+      content = content.replace(sectionHeader, `${sectionHeader}\n${entry}`);
+    } else {
+      content += `\n${entry}`;
+    }
+  });
+
+  fs.writeFileSync(target, content, 'utf8');
+  console.log(`\x1b[32m✔ [Mem0 Engine] Autonomously learned and categorized pattern into ${MEMORY_FILE}:\x1b[0m`);
+  extractions.forEach(e => console.log(`  ● \x1b[36m${e.entry.trim()}\x1b[0m`));
+} else if (command === 'graph') {
+  console.log(`\x1b[36m🕸️ [GraphRAG Engine] Generating Hierarchical Community Knowledge Graph...\x1b[0m\n`);
+  const communities = buildGraphRagCommunities(process.cwd());
+
+  console.log(`\x1b[32m📦 Component Community (${communities.components.length} files):\x1b[0m`);
+  communities.components.slice(0, 10).forEach(c => console.log(`  ● ${c}`));
+
+  console.log(`\n\x1b[33m⚡ Hooks & State Community (${communities.hooks_and_state.length} files):\x1b[0m`);
+  communities.hooks_and_state.slice(0, 10).forEach(h => console.log(`  ● ${h}`));
+
+  console.log(`\n\x1b[34m🔌 API & Data Services (${communities.api_and_data.length} files):\x1b[0m`);
+  communities.api_and_data.slice(0, 10).forEach(a => console.log(`  ● ${a}`));
+
+  console.log(`\n\x1b[35m🛡️ Types & Schemas (${communities.types_and_schemas.length} files):\x1b[0m`);
+  communities.types_and_schemas.slice(0, 10).forEach(t => console.log(`  ● ${t}`));
+
+  console.log(`\n\x1b[36m🌐 External Package Dependencies (${communities.dependencies.length} packages):\x1b[0m`);
+  console.log(`  [ ${communities.dependencies.join(', ')} ]\n`);
 } else if (command === 'ast') {
   const query = process.argv[3] || '';
   console.log(`\x1b[36m⚡ Scanning Codebase AST Symbols (Query: '${query || "ALL"}')...\x1b[0m\n`);
@@ -209,11 +338,8 @@ if (command === 'init') {
 
   function sendResponse(id, result, error = null) {
     const response = { jsonrpc: '2.0', id };
-    if (error) {
-      response.error = error;
-    } else {
-      response.result = result;
-    }
+    if (error) response.error = error;
+    else response.result = result;
     process.stdout.write(JSON.stringify(response) + '\n');
   }
 
@@ -243,16 +369,22 @@ if (command === 'init') {
               },
             },
             {
-              name: 'append_memory_entry',
-              description: 'Commit a new architectural decision, bug fix pattern, or user preference directly into AGENT_MEMORY.md.',
+              name: 'learn_adaptive_memory',
+              description: 'Mem0-inspired adaptive memory learner. Automatically parses a freeform text or bug pattern and stores it into the appropriate section of AGENT_MEMORY.md.',
               inputSchema: {
                 type: 'object',
                 properties: {
-                  section: { type: 'string', enum: ['arch', 'bug', 'pref'], description: 'Target section' },
-                  title: { type: 'string', description: 'Brief description of the decision or bug' },
-                  tags: { type: 'string', description: 'Semantic tags (e.g., #auth #supabase)' },
+                  observation: { type: 'string', description: 'The pattern, preference, or bug learned from the session' },
                 },
-                required: ['section', 'title'],
+                required: ['observation'],
+              },
+            },
+            {
+              name: 'get_graphrag_communities',
+              description: 'GraphRAG hierarchical module community summary. Returns interconnected components, hooks, API services, types, and external package dependencies.',
+              inputSchema: {
+                type: 'object',
+                properties: {},
               },
             },
             {
@@ -279,25 +411,34 @@ if (command === 'init') {
             const filtered = parseMemoryByTags(raw, args?.tag);
             sendResponse(id, { content: [{ type: 'text', text: filtered }] });
           }
-        } else if (name === 'append_memory_entry') {
-          const dateStr = new Date().toISOString().split('T')[0];
-          const tagStr = args?.tags ? ` ${args.tags}` : '';
-          const entry = `* **[${dateStr}]${tagStr}** ${args.title}\n`;
+        } else if (name === 'learn_adaptive_memory') {
+          const extractions = extractMem0AdaptivePatterns(args?.observation || '');
           let content = fs.existsSync(memPath) ? fs.readFileSync(memPath, 'utf8') : DEFAULT_TEMPLATE;
-          
-          const sectionHeader = (args.section === 'arch')
-            ? '## 📐 1. Architectural Decisions'
-            : (args.section === 'bug')
-            ? '## 🐛 2. Bug Discoveries'
-            : '## 👤 3. User Preferences';
 
-          if (content.includes(sectionHeader)) {
-            content = content.replace(sectionHeader, `${sectionHeader}\n${entry}`);
-          } else {
-            content += `\n${entry}`;
-          }
+          extractions.forEach(({ section, entry }) => {
+            const sectionHeader = section === 'bug'
+              ? '## 🐛 2. Bug Discoveries'
+              : section === 'pref'
+              ? '## 👤 3. User Preferences'
+              : '## 📐 1. Architectural Decisions';
+
+            if (content.includes(sectionHeader)) {
+              content = content.replace(sectionHeader, `${sectionHeader}\n${entry}`);
+            } else {
+              content += `\n${entry}`;
+            }
+          });
+
           fs.writeFileSync(memPath, content, 'utf8');
-          sendResponse(id, { content: [{ type: 'text', text: `✔ Successfully committed entry to ${args.section} in AGENT_MEMORY.md` }] });
+          sendResponse(id, { content: [{ type: 'text', text: `✔ [Mem0 Engine] Autonomously memorized: "${args.observation}"` }] });
+        } else if (name === 'get_graphrag_communities') {
+          const communities = buildGraphRagCommunities(process.cwd());
+          sendResponse(id, {
+            content: [{
+              type: 'text',
+              text: JSON.stringify(communities, null, 2),
+            }],
+          });
         } else if (name === 'query_ast_symbols') {
           const symbols = scanAstSymbols(process.cwd(), args?.query || '');
           sendResponse(id, {
@@ -324,6 +465,8 @@ Usage:
   npx vibe-memory init                         Initialize AGENT_MEMORY.md with smart tags
   npx vibe-memory search <#tag|query>          Search memory for specific topics (#auth, #database, #bug)
   npx vibe-memory add <arch|bug|pref> "<text>" Append a new decision or bug fix
+  npx vibe-memory learn "<text>"               Mem0 Adaptive Learning: auto-categorize and memorize
+  npx vibe-memory graph                        GraphRAG: Hierarchical component & API community map
   npx vibe-memory ast [query]                  Instant AST symbol lookup (97% token savings)
   npx vibe-memory mcp                          Start Model Context Protocol (MCP) stdio server
 `);

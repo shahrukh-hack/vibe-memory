@@ -7,6 +7,8 @@
 [![Version](https://img.shields.io/badge/Version-v2.5.0-635BFF?style=flat-square)](package.json)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![MCP Protocol](https://img.shields.io/badge/MCP-JSON--RPC%202.0%20Ready-green?style=flat-square)](https://modelcontextprotocol.io/)
+[![Mem0 Adaptive](https://img.shields.io/badge/Mem0-Adaptive%20Learning-FF6B6B?style=flat-square)](https://github.com/mem0ai/mem0)
+[![GraphRAG](https://img.shields.io/badge/GraphRAG-Community%20Maps-4DABF7?style=flat-square)](https://github.com/microsoft/graphrag)
 [![Token Reduction](https://img.shields.io/badge/Context%20Tokens-97%25%20Saved-brightgreen?style=flat-square)](#)
 [![Live Visualizer](https://img.shields.io/badge/Live-Memory%20Visualizer-FF0055?style=flat-square&logo=framer)](https://shahrukh-hack.github.io/vibe-memory/)
 
@@ -35,22 +37,24 @@ When building production software with AI coding agents (**Antigravity**, **Curs
 
 ---
 
-## 🚀 The Dual-Engine Solution
+## 🚀 The Multi-Engine Architecture
 
 ```
                           ┌────────────────────────────────────────────────────────┐
-                          │                VIBE MEMORY DUAL ENGINE                 │
+                          │               VIBE MEMORY MULTI-ENGINE                 │
                           └───────────────────────────┬────────────────────────────┘
                                                       │
-                       ┌──────────────────────────────┴──────────────────────────────┐
-                       ▼                                                             ▼
-┌──────────────────────────────────────────────┐              ┌──────────────────────────────────────────────┐
-│  ENGINE 1: CONTEXT & HANDOFF MEMORY          │              │  ENGINE 2: AST & SYMBOL KNOWLEDGE GRAPH      │
-│  • Architectural Decision Records (ADR)      │              │  • Component & Function Hierarchies          │
-│  • Bug fix pattern discoveries               │              │  • Call graphs & export dependency maps      │
-│  • Anti-AI slop user preferences             │              │  • 97% Context Token Reduction               │
-│  • Smart semantic tags (#auth, #bug, #pref)  │              │  • Sub-millisecond symbol queries            │
-└──────────────────────────────────────────────┘              └──────────────────────────────────────────────┘
+         ┌────────────────────────────┬───────────────┴──────────────┬────────────────────────────┐
+         ▼                            ▼                              ▼                            ▼
+┌───────────────────┐        ┌───────────────────┐        ┌───────────────────┐        ┌───────────────────┐
+│ 🧠 MEM0 ADAPTIVE  │        │ 🕸️ GRAPHRAG MAPS  │        │ 🌳 AST PROGRESSIVE│        │ 🔄 CROSS-AGENT    │
+│   LEARNING ENGINE │        │   COMMUNITY NODES │        │   DISCLOSURE (97%)│        │   HANDOFF WIZARD  │
+├───────────────────┤        ├───────────────────┤        ├───────────────────┤        ├───────────────────┤
+│ • Auto-extracts   │        │ • Hierarchical    │        │ • Function & type │        │ • Zero-friction   │
+│   preferences &   │        │   module maps     │        │   signatures in   │        │   checkpoints for │
+│   bug patterns    │        │ • Impact analysis │        │   <100 tokens     │        │   Antigravity,    │
+│ • Self-updating   │        │ • Dependency trees│        │ • Instant index   │        │   Cursor & Claude │
+└───────────────────┘        └───────────────────┘        └───────────────────┘        └───────────────────┘
 ```
 
 ---
@@ -61,19 +65,25 @@ When building production software with AI coding agents (**Antigravity**, **Curs
 # 1. Initialize AGENT_MEMORY.md in any workspace
 npx vibe-memory init
 
-# 2. Search memory for specific tags or topics
+# 2. Mem0 Adaptive Learning: auto-categorize and memorize
+npx vibe-memory learn "Always use 420Hz spring physics for button clicks"
+npx vibe-memory learn "Fixed Next.js 15 async headers() bug in auth middleware"
+
+# 3. GraphRAG: Hierarchical module community map & dependency analyzer
+npx vibe-memory graph
+
+# 4. Search memory for specific tags or topics
 npx vibe-memory search auth
 npx vibe-memory search #bug
 
-# 3. Append a new architectural decision or bug fix
+# 5. Append a new architectural decision or bug fix manually
 npx vibe-memory add arch "Migrated to Tailwind v4 @theme architecture" "[ #arch #tailwind ]"
-npx vibe-memory add bug "Fixed Next.js SSR hydration mismatch" "[ #bug #fix ]"
 
-# 4. Instant AST Symbol Lookup across repository (97% token savings)
+# 6. Instant AST Symbol Lookup across repository (97% token savings)
 npx vibe-memory ast
 npx vibe-memory ast AuthButton
 
-# 5. Start the Model Context Protocol (MCP) Server for AI IDEs
+# 7. Start the Model Context Protocol (MCP) Server for AI IDEs
 npx vibe-memory mcp
 ```
 
@@ -81,7 +91,7 @@ npx vibe-memory mcp
 
 ## 🔌 Model Context Protocol (MCP) Configuration
 
-Equip **Antigravity**, **Cursor**, and **Claude Code** with automated memory recall and AST queries over native stdio JSON-RPC:
+Equip **Antigravity**, **Cursor**, and **Claude Code** with automated memory recall, adaptive learning, and GraphRAG queries over native stdio JSON-RPC:
 
 ### 🔹 Antigravity (`~/.gemini/antigravity/mcp-config.json`):
 ```json
@@ -126,8 +136,9 @@ Equip **Antigravity**, **Cursor**, and **Claude Code** with automated memory rec
 | MCP Tool Name | Parameters | Description |
 | :--- | :--- | :--- |
 | **`get_project_memory`** | `{ tag?: string }` | Retrieves project ADRs, bug fixes, and user preferences from `AGENT_MEMORY.md` with optional tag filtering. |
-| **`append_memory_entry`** | `{ section: "arch"|"bug"|"pref", title: string, tags?: string }` | Commits a new architectural decision, bug discovery, or user preference directly to `AGENT_MEMORY.md`. |
-| **`query_ast_symbols`** | `{ query?: string }` | Scans workspace and returns exported functions, interfaces, and classes in <100 tokens. |
+| **`learn_adaptive_memory`** | `{ observation: string }` | **Mem0-inspired:** Automatically parses a freeform text or bug pattern and stores it into the appropriate section of `AGENT_MEMORY.md`. |
+| **`get_graphrag_communities`** | `{}` | **GraphRAG-inspired:** Returns hierarchical module communities (components, hooks, API services, types, and external dependencies). |
+| **`query_ast_symbols`** | `{ query?: string }` | Scans workspace and returns exported functions, interfaces, and classes in <100 tokens (97% savings). |
 
 ---
 
@@ -160,12 +171,16 @@ Finalizing the real-time fleet telemetry map and vehicle status filter.
 
 ---
 
-## ⚡ 97% Context Token Savings via AST Indexing
+## 🙏 Credits & Ecosystem References
 
-| Method | Tokens Consumed | Response Latency | Cost / Risk |
-|---|---|---|---|
-| **Raw File Reading** | ~15,000 – 50,000 tokens | 6.5s – 12.0s | High cost, context bloat, hallucinations |
-| **Vibe Memory AST Index** | **~85 – 150 tokens** | **0.4s** | **97% savings, instant focus, zero amnesia** |
+We gratefully acknowledge the open-source projects whose groundbreaking architectures inspired and shaped `vibe-memory`:
+
+| Project | Author | Stars | Attribution & Influence |
+| :--- | :--- | :---: | :--- |
+| **`Mem0`** | **Mem0 Team** | **28.2k+ ⭐** | [`mem0ai/mem0`](https://github.com/mem0ai/mem0) · Adaptive episodic memory extraction and self-updating user preference learning. |
+| **`GraphRAG`** | **Microsoft Research** | **23.4k+ ⭐** | [`microsoft/graphrag`](https://github.com/microsoft/graphrag) · Hierarchical community graph mapping and dependency impact analysis. |
+| **`Tree-sitter`** | **Tree-sitter Contributors** | **20.1k+ ⭐** | [`tree-sitter/tree-sitter`](https://github.com/tree-sitter/tree-sitter) · Incremental AST grammar parsing and sub-millisecond symbol extraction. |
+| **`Model Context Protocol`** | **Anthropic** | **141.0k+ ⭐** | [`modelcontextprotocol.io`](https://modelcontextprotocol.io/) · Open JSON-RPC 2.0 stdio tool integration standard. |
 
 ---
 

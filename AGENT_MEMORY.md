@@ -15,7 +15,8 @@
 
 ---
 
-## 👤 3. User Preferences & Anti-AI Slop Rules
+## 👤 3. User Preferences
+* **[ #pref #adaptive ]** Always use 420Hz spring physics for button clicks & Anti-AI Slop Rules
 * **No Cliché Bento Overload**: Avoid stuffing random Lucide icons into rounded cards.
 * **No Neon Purple on Dark Theme**: Prioritize tailored HSL palettes (Editorial Warm, Swiss Precision, Tactile Slate).
 * **Physics-Based Spring Transitions**: Use Framer Motion spring presets (`stiffness: 400`, `damping: 30`).
