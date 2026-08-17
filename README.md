@@ -1,11 +1,12 @@
 <div align="center">
 
-# 🧠 Vibe Memory
+# 🧠 Vibe Memory (v2.5)
 ### Universal Long-Term Memory & Codebase AST Intelligence Protocol for AI Coding Agents
 
 [![Author](https://img.shields.io/badge/Author-@shahrukh--hack-181717?style=flat-square&logo=github)](https://github.com/shahrukh-hack)
+[![Version](https://img.shields.io/badge/Version-v2.5.0-635BFF?style=flat-square)](package.json)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
-[![MCP Protocol](https://img.shields.io/badge/MCP-Compatible-green?style=flat-square)](https://modelcontextprotocol.io/)
+[![MCP Protocol](https://img.shields.io/badge/MCP-JSON--RPC%202.0%20Ready-green?style=flat-square)](https://modelcontextprotocol.io/)
 [![Token Reduction](https://img.shields.io/badge/Context%20Tokens-97%25%20Saved-brightgreen?style=flat-square)](#)
 [![Live Visualizer](https://img.shields.io/badge/Live-Memory%20Visualizer-FF0055?style=flat-square&logo=framer)](https://shahrukh-hack.github.io/vibe-memory/)
 
@@ -26,7 +27,7 @@ Test the visual memory lineage graph, search indexed codebase symbols, and gener
 
 ## ⚡ The Core Problem: Why AI Agents Fail Without Memory
 
-When building production software with AI coding agents (Antigravity, Cursor, Claude Code, OpenAI Codex, Aider), developers face three major bottlenecks:
+When building production software with AI coding agents (**Antigravity**, **Cursor**, **Claude Code**, **OpenAI Codex**, **Windsurf**), developers face three major bottlenecks:
 
 1. **🔴 The "Fresh Chat Amnesia" Problem:** Every time a context window resets or you open a new conversation, the AI forgets your architectural decisions, design tokens, and the edge-case bugs you solved yesterday.
 2. **💸 The "Raw File Dumping" Token Tax:** When an agent needs to understand a component or function, it reads dozens of full source code files—burning 15,000+ to 50,000+ context tokens and slowing down responses.
@@ -35,8 +36,6 @@ When building production software with AI coding agents (Antigravity, Cursor, Cl
 ---
 
 ## 🚀 The Dual-Engine Solution
-
-**Vibe Memory** unifies two world-class paradigms into a single, vendor-neutral protocol:
 
 ```
                           ┌────────────────────────────────────────────────────────┐
@@ -50,47 +49,41 @@ When building production software with AI coding agents (Antigravity, Cursor, Cl
 │  • Architectural Decision Records (ADR)      │              │  • Component & Function Hierarchies          │
 │  • Bug fix pattern discoveries               │              │  • Call graphs & export dependency maps      │
 │  • Anti-AI slop user preferences             │              │  • 97% Context Token Reduction               │
-│  • Seamless cross-agent handoff snapshots    │              │  • Sub-millisecond symbol queries            │
+│  • Smart semantic tags (#auth, #bug, #pref)  │              │  • Sub-millisecond symbol queries            │
 └──────────────────────────────────────────────┘              └──────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🏗️ Architecture & Cross-Tool Flow
+## ⚡ 1-Command CLI Usage
 
-```mermaid
-graph LR
-    A[Antigravity Agent] -->|1. Commit Architectural Decisions| M[AGENT_MEMORY.md Store]
-    B[Claude Code CLI] -->|2. Commit Bug Fix Patterns| M
-    C[Cursor IDE] -->|3. Read User Intent & Tokens| M
-    M -->|4. MCP stdio JSON-RPC| D[Vibe Memory MCP Server]
-    D -->|5. Instant AST & Symbol Lookup| E[Any Coding Agent]
-    M -->|6. Live Lineage Graph| F[Web Visualizer UI]
-```
-
----
-
-## 📦 How to Use in Ongoing / Existing Projects
-
-### Step 1: Initialize in 10 Seconds
-Run this single command in the root of **any new or existing repository**:
 ```bash
+# 1. Initialize AGENT_MEMORY.md in any workspace
 npx vibe-memory init
-```
 
-This creates the standard **`AGENT_MEMORY.md`** file formatted with 4 persistent sections:
-* 📐 **1. Architectural Decisions (ADR):** Framework choices, state management patterns, and database schemas.
-* 🐛 **2. Bug Discoveries & Learnings:** Edge-case API quirks, platform fixes, and dependency constraints.
-* 👤 **3. User Preferences:** Anti-AI slop design tokens, styling rules, and coding conventions.
-* 🔄 **4. Active Handoff Checkpoint:** Current milestone status, completed steps, and immediate next actions.
+# 2. Search memory for specific tags or topics
+npx vibe-memory search auth
+npx vibe-memory search #bug
+
+# 3. Append a new architectural decision or bug fix
+npx vibe-memory add arch "Migrated to Tailwind v4 @theme architecture" "[ #arch #tailwind ]"
+npx vibe-memory add bug "Fixed Next.js SSR hydration mismatch" "[ #bug #fix ]"
+
+# 4. Instant AST Symbol Lookup across repository (97% token savings)
+npx vibe-memory ast
+npx vibe-memory ast AuthButton
+
+# 5. Start the Model Context Protocol (MCP) Server for AI IDEs
+npx vibe-memory mcp
+```
 
 ---
 
-### Step 2: Connect via Model Context Protocol (MCP)
+## 🔌 Model Context Protocol (MCP) Configuration
 
-Add `vibe-memory` to your AI coding tools to enable automated memory recall and AST queries:
+Equip **Antigravity**, **Cursor**, and **Claude Code** with automated memory recall and AST queries over native stdio JSON-RPC:
 
-#### 🔹 Antigravity (`~/.gemini/antigravity/mcp-config.json`):
+### 🔹 Antigravity (`~/.gemini/antigravity/mcp-config.json`):
 ```json
 {
   "mcpServers": {
@@ -102,7 +95,7 @@ Add `vibe-memory` to your AI coding tools to enable automated memory recall and 
 }
 ```
 
-#### 🔹 Cursor (`.cursor/mcp.json`):
+### 🔹 Cursor (`.cursor/mcp.json`):
 ```json
 {
   "mcpServers": {
@@ -114,7 +107,7 @@ Add `vibe-memory` to your AI coding tools to enable automated memory recall and 
 }
 ```
 
-#### 🔹 Claude Code (`~/.claude.json`):
+### 🔹 Claude Code (`~/.claude.json`):
 ```json
 {
   "mcpServers": {
@@ -125,19 +118,29 @@ Add `vibe-memory` to your AI coding tools to enable automated memory recall and 
   }
 }
 ```
+
+---
+
+## 🛠️ Native MCP Tools Included:
+
+| MCP Tool Name | Parameters | Description |
+| :--- | :--- | :--- |
+| **`get_project_memory`** | `{ tag?: string }` | Retrieves project ADRs, bug fixes, and user preferences from `AGENT_MEMORY.md` with optional tag filtering. |
+| **`append_memory_entry`** | `{ section: "arch"|"bug"|"pref", title: string, tags?: string }` | Commits a new architectural decision, bug discovery, or user preference directly to `AGENT_MEMORY.md`. |
+| **`query_ast_symbols`** | `{ query?: string }` | Scans workspace and returns exported functions, interfaces, and classes in <100 tokens. |
 
 ---
 
 ## 🔄 The Cross-Agent Handoff Workflow
 
-When you want to switch from **Antigravity** to **Cursor** or **Claude Code** mid-task:
+When switching from **Antigravity** to **Cursor** or **Claude Code** mid-task:
 
 1. Tell your active agent: *"Create handoff snapshot for Cursor."*
 2. The agent appends a structured checkpoint to `AGENT_MEMORY.md`:
 
 ```markdown
 <!-- AGENT_HANDOFF_SNAPSHOT: ANTIGRAVITY ➔ CURSOR -->
-# 🔄 Context Handoff (2026-08-16T21:45:00Z)
+# 🔄 Context Handoff (2026-08-17T22:30:00Z)
 
 ## 🎯 Active Objective
 Finalizing the real-time fleet telemetry map and vehicle status filter.
@@ -159,8 +162,6 @@ Finalizing the real-time fleet telemetry map and vehicle status filter.
 
 ## ⚡ 97% Context Token Savings via AST Indexing
 
-Instead of dumping full files into the LLM prompt:
-
 | Method | Tokens Consumed | Response Latency | Cost / Risk |
 |---|---|---|---|
 | **Raw File Reading** | ~15,000 – 50,000 tokens | 6.5s – 12.0s | High cost, context bloat, hallucinations |
@@ -168,26 +169,12 @@ Instead of dumping full files into the LLM prompt:
 
 ---
 
-## 💻 Local Development & Web Visualizer
+## 🤝 Part of The Vibe Coder's Power Suite
 
-```bash
-# Clone the repository
-git clone https://github.com/shahrukh-hack/vibe-memory.git
-cd vibe-memory
-
-# Install dependencies
-npm install
-
-# Start local visualizer
-npm run dev
-```
-
----
-
-## 🤝 Part of the Vibe Coding Ecosystem
-
-* 🪄 **[Vibe Superkit](https://github.com/shahrukh-hack/vibe-superkit):** The Anti-AI Slop & High-Taste Design Engine (UI/UX, Spring Physics, Design Tokens).
-* 🧠 **[Vibe Memory](https://github.com/shahrukh-hack/vibe-memory):** Universal Long-Term Agent Memory & AST Codebase Intelligence.
+1. 🪄 **[`vibe-superkit`](https://github.com/shahrukh-hack/vibe-superkit):** Anti-AI Slop & Stripe/Tailwind UI Design Engine ([Live Demo](https://shahrukh-hack.github.io/vibe-superkit/))
+2. 🧠 **[`vibe-memory`](https://github.com/shahrukh-hack/vibe-memory):** Universal Long-Term Memory & Codebase AST Intelligence ([Live Demo](https://shahrukh-hack.github.io/vibe-memory/))
+3. ⚡ **[`vibe-skills`](https://github.com/shahrukh-hack/vibe-skills):** Mega-Library of 50 Standard Agent Skills with 1-Command CLI (`npx vibe-skills add <skill>`)
+4. 🤖 **[`vibe-agency`](https://github.com/shahrukh-hack/vibe-agency):** Autonomous Multi-Agent Team Orchestrator with 200+ Agents & Vibe Kanban ([Live Demo](https://shahrukh-hack.github.io/vibe-agency/))
 
 ---
 
