@@ -54,7 +54,7 @@ export function App() {
                 Vibe Memory
               </span>
               <span className="hidden sm:inline-block ml-2 text-[11px] font-mono text-muted-foreground">
-                v2.5 (Mem0 + GraphRAG + AST Engine)
+                v2.5.0 (Mem0 + GraphRAG + AST Engine)
               </span>
             </div>
           </div>

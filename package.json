@@ -1,6 +1,6 @@
 {
   "name": "vibe-memory",
-  "version": "1.0.0",
+  "version": "2.5.0",
   "description": "Universal Long-Term Memory & Cross-Agent Handoff Protocol for AI Coding Agents (Antigravity, Cursor, Claude Code, Codex)",
   "main": "dist/index.html",
   "bin": {
