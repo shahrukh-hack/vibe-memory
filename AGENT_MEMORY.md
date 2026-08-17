@@ -16,6 +16,7 @@
 ---
 
 ## 👤 3. User Preferences
+* **[ #pref #adaptive ]** Never place static cards, calculators, or hero banners between the tab navigation bar and the active dynamic tab content. Tab content must render immediately below navigation for instant filter feedback.
 * **[ #pref #adaptive ]** Always use 420Hz spring physics for button clicks & Anti-AI Slop Rules
 * **No Cliché Bento Overload**: Avoid stuffing random Lucide icons into rounded cards.
 * **No Neon Purple on Dark Theme**: Prioritize tailored HSL palettes (Editorial Warm, Swiss Precision, Tactile Slate).
